@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Movie Review Sentiment Analyzer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-body: #f5f5f7;
+        --bg-card: #ffffff;
+        --border-subtle: #e2e8f0;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.08);
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+      }
+
+      body {
+        background: radial-gradient(circle at top, #ffffff 0, #e5e7eb 50%);
+        color: var(--text-main);
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 960px;
+      }
+
+      .logo-row {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .app-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.2rem 0.7rem;
+        border-radius: 999px;
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #4f46e5;
+      }
+
+      .glow-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        background: #22c55e;
+      }
+
+      .card {
+        border-radius: 1.5rem;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-card);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+        overflow: hidden;
+      }
+
+      .card-header-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 0.35rem;
+      }
+
+      .window-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+      }
+
+      .window-dot.red {
+        background: #f97373;
+      }
+      .window-dot.yellow {
+        background: #facc15;
+      }
+      .window-dot.green {
+        background: #22c55e;
+      }
+
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        max-width: 38rem;
+        margin: 0 auto 1.5rem auto;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 220px;
+        background: #f9fafb;
+        border-radius: 1rem !important;
+        border: 1px solid #d1d5db;
+        color: var(--text-main);
+        font-size: 0.98rem;
+      }
+
+      textarea::placeholder {
+        color: #9ca3af;
+      }
+
+      textarea:focus {
+        box-shadow: 0 0 0 1px var(--accent);
+        border-color: var(--accent);
+        background: #ffffff;
+      }
+
+      .btn-primary {
+        border-radius: 999px;
+        padding-inline: 1.6rem;
+        padding-block: 0.65rem;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border: none;
+        font-weight: 500;
+        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        box-shadow: 0 10px 28px rgba(37, 99, 235, 0.4);
+      }
+
+      .sentiment-positive {
+        color: #16a34a;
+      }
+
+      .sentiment-negative {
+        color: #dc2626;
+      }
+
+      .result-card {
+        border-radius: 1.1rem;
+        border: 1px solid var(--border-subtle);
+        background: #f8fafc;
+        padding: 1.2rem 1.3rem;
+        margin-top: 1.5rem;
+      }
+
+      .score-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.25rem 0.8rem;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        border: 1px solid rgba(37, 99, 235, 0.4);
+        font-size: 0.82rem;
+      }
+
+      .score-label {
+        color: #1d4ed8;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .score-value {
+        color: var(--text-main);
+        font-weight: 500;
+      }
+
+      .text-muted-sub {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 1rem;
+        }
+        .card {
+          border-radius: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="logo-row">
+        <div class="app-badge">
+          <span class="glow-dot"></span>
+          <span>Sentiment Studio</span>
+        </div>
+        <h1 class="h3 mt-3 mb-1">Movie Review Sentiment Analyzer</h1>
+        <p class="subtitle">
+          Paste any movie review—from a short sentence to a full paragraph—and
+          get an instant sentiment prediction together with model confidence.
+        </p>
+      </div>
+
+      <div class="card p-4 p-md-5">
+        <div class="card-header-bar">
+          <div class="window-dots">
+            <span class="window-dot red"></span>
+            <span class="window-dot yellow"></span>
+            <span class="window-dot green"></span>
+          </div>
+          <span class="text-muted-sub">SVM · TF‑IDF model</span>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger py-2 mb-3" role="alert">
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="post" novalidate class="mb-2">
+          <div class="mb-3">
+            <label for="review" class="form-label small text-muted"
+              >Your review</label
+            >
+            <textarea
+              class="form-control"
+              id="review"
+              name="review"
+              placeholder="e.g. The movie was surprisingly engaging with great performances, although the pacing felt slow in the middle."
+              required
+            >{{ review_text }}</textarea>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">
+              Analyze sentiment
+            </button>
+          </div>
+        </form>
+        <p class="text-center text-muted-sub mb-0">
+          Your text is processed only in this session and never stored.
+        </p>
+
+        {% if result %}
+        <div class="result-card">
+          <p class="mb-2 score-label">Prediction</p>
+          <p class="mb-3">
+            Sentiment
+            <strong
+              class="{% if result.label == 'Positive' %}sentiment-positive{% else %}sentiment-negative{% endif %}"
+            >
+              {{ result.label }}
+            </strong>
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="score-pill">
+              <span class="score-label">Score</span>
+              <span class="score-value">{{ result.score }}</span>
+            </span>
+            <span class="score-pill">
+              <span class="score-label">P(Positive)</span>
+              <span class="score-value">{{ result.probability }}</span>
+            </span>
+          </div>
+
+          <p class="text-muted-sub mb-0">
+            Scores closer to 1 indicate high model confidence in positive
+            sentiment, while values near 0 or negative scores suggest a more
+            negative tone.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+  </html>
+

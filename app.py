@@ -127,6 +127,6 @@ def index():
 
 
 if __name__ == "__main__":
-    # For local development; in production use a proper WSGI/ASGI server.
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
 

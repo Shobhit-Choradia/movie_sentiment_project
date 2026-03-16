@@ -19,5 +19,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Local utilities / backups (not tracked)
+update_tfidf_vectorizer.py
+ml_assets/tfidf_vectorizer_backup_skl_1_6_1.pkl
+
 # Logs
 *.log
